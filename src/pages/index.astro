@@ -4,6 +4,18 @@ import { Image } from 'astro:assets';
 import kevinPhoto from '@/media/kevin-photo-1.jpg';
 
 const accent = 'text-lime-300';
+
+// Intake form shared styles (kept as consts to avoid repeating long class lists)
+const h2Cls = 'text-2xl font-bold tracking-tight';
+const leadCls = 'mt-3 text-neutral-400 leading-relaxed';
+const labelCls = 'flex items-start gap-3 py-2 text-neutral-200 cursor-pointer hover:text-white transition-colors';
+const choiceCls = 'mt-0.5 w-4 h-4 accent-lime-300 shrink-0';
+const fieldCls = 'w-full mt-2 mb-3 px-4 py-3 rounded-md bg-neutral-800 border border-neutral-700 text-neutral-100 placeholder-neutral-500 focus:border-lime-300 focus:outline-none transition-colors';
+const areaCls = fieldCls + ' min-h-[120px] resize-y';
+const subLabelCls = 'mt-5 mb-1 font-semibold text-neutral-200';
+const navCls = 'mt-8 flex gap-3';
+const nextCls = 'next px-6 py-3 rounded-md bg-lime-300 text-neutral-950 font-semibold text-sm hover:bg-lime-200 transition-colors';
+const backCls = 'back px-6 py-3 rounded-md border border-neutral-600 text-neutral-200 font-semibold text-sm hover:border-neutral-400 transition-colors';
 ---
 
 <BaseLayout title="Home">
@@ -175,22 +187,263 @@ const accent = 'text-lime-300';
         </div>
       </section>
 
-      <!-- 6 · One door -->
-      <section id="contact">
-        <div class="max-w-4xl mx-auto px-4 py-10">
-          <p class="text-sm text-neutral-500 mb-4">6 · One door</p>
-          <div class="rounded-lg bg-neutral-900 border border-neutral-800 p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div>
-              <p class="text-xl font-bold">Want to know if we're a good fit?</p>
-              <p class="text-neutral-400 mt-1">Five minutes. Then a free call. Then you decide.</p>
+      <!-- 6 · Intake form -->
+      <section id="contact" class="scroll-mt-20">
+        <div class="max-w-2xl mx-auto px-4 py-14">
+          <form id="rev4-intake-form" action="https://usebasin.com/f/YOUR_FORM_ID" method="POST"
+                class="rounded-xl bg-neutral-900 border border-neutral-800 p-6 sm:p-8">
+            <input type="hidden" name="submission_id" id="submission_id" />
+            <input type="hidden" name="form_status" id="form_status" value="draft" />
+            <input type="hidden" name="current_step" id="current_step" value="1" />
+
+            <!-- Step 1 -->
+            <div class="form-step" data-step="1">
+              <h2 class={h2Cls}>Want To See If We're a Good Fit?</h2>
+              <p class={leadCls}>This short assessment helps me understand what you're trying to achieve before we schedule a conversation. Most people complete it in about 5 minutes.</p>
+              <div class={navCls}>
+                <button type="button" class={nextCls}>Get Started</button>
+              </div>
             </div>
-            <a href="#contact" class="px-5 py-2.5 rounded-md bg-lime-300 text-neutral-950 font-semibold text-sm hover:bg-lime-200 transition-colors whitespace-nowrap">Get started</a>
-          </div>
-          <div class="flex justify-center mt-8">
-            <span class="w-9 h-9 rounded-full border border-neutral-700 grid place-items-center text-neutral-400">↓</span>
+
+            <!-- Step 2 -->
+            <div class="form-step hidden" data-step="2">
+              <h2 class={h2Cls}>Desired Outcome</h2>
+              <p class={leadCls}>If we worked together, what outcome would make you say, “Hiring Rev4 was one of the best decisions we made”?</p>
+              <div class="mt-4">
+                <label class={labelCls}><input type="checkbox" name="desired_outcome[]" value="Increase revenue" class={choiceCls} /> Increase revenue</label>
+                <label class={labelCls}><input type="checkbox" name="desired_outcome[]" value="Generate better quality leads" class={choiceCls} /> Generate better quality leads</label>
+                <label class={labelCls}><input type="checkbox" name="desired_outcome[]" value="Become known for a specific service or niche" class={choiceCls} /> Become known for a specific service or niche</label>
+                <label class={labelCls}><input type="checkbox" name="desired_outcome[]" value="Improve marketing ROI" class={choiceCls} /> Improve marketing ROI</label>
+                <label class={labelCls}><input type="checkbox" name="desired_outcome[]" value="Modernize our website" class={choiceCls} /> Modernize our website</label>
+                <label class={labelCls}><input type="checkbox" name="desired_outcome[]" value="Understand what is actually working" class={choiceCls} /> Understand what’s actually working</label>
+                <label class={labelCls}><input type="checkbox" name="desired_outcome[]" value="Reduce spam and junk leads" class={choiceCls} /> Reduce spam and junk leads</label>
+                <label class={labelCls}><input type="checkbox" name="desired_outcome[]" value="Improve AI visibility" class={choiceCls} /> Improve AI visibility</label>
+                <label class={labelCls}><input type="checkbox" name="desired_outcome[]" value="Automate repetitive work" class={choiceCls} /> Automate repetitive work</label>
+                <label class={labelCls}><input type="checkbox" name="desired_outcome[]" value="Other" class={choiceCls} /> Other</label>
+              </div>
+              <div class={navCls}>
+                <button type="button" class={backCls}>Back</button>
+                <button type="button" class={nextCls}>Next</button>
+              </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="form-step hidden" data-step="3">
+              <h2 class={h2Cls}>Biggest Challenge</h2>
+              <p class={leadCls}>In your own words, what’s the biggest challenge preventing you from reaching that outcome?</p>
+              <textarea name="biggest_challenge" class={areaCls} placeholder="Tell me what's going on. You don't need to use marketing language — just explain the situation as you see it."></textarea>
+              <div class={navCls}>
+                <button type="button" class={backCls}>Back</button>
+                <button type="button" class={nextCls}>Next</button>
+              </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="form-step hidden" data-step="4">
+              <h2 class={h2Cls}>Current Situation</h2>
+              <p class={leadCls}>Which statement sounds most like your business today?</p>
+              <div class="mt-4">
+                <label class={labelCls}><input type="radio" name="current_situation" value="Growing but plateaued" class={choiceCls} /> We’re growing, but we’ve hit a plateau.</label>
+                <label class={labelCls}><input type="radio" name="current_situation" value="Could grow faster" class={choiceCls} /> We know we could grow faster.</label>
+                <label class={labelCls}><input type="radio" name="current_situation" value="Marketing disconnected" class={choiceCls} /> Our marketing feels disconnected.</label>
+                <label class={labelCls}><input type="radio" name="current_situation" value="Do not know what is working" class={choiceCls} /> We don’t know what’s actually working.</label>
+                <label class={labelCls}><input type="radio" name="current_situation" value="Too many vendors" class={choiceCls} /> We have too many vendors.</label>
+                <label class={labelCls}><input type="radio" name="current_situation" value="Wrong leads" class={choiceCls} /> We’re generating leads but not enough of the right ones.</label>
+                <label class={labelCls}><input type="radio" name="current_situation" value="Need clearer direction" class={choiceCls} /> We need a clearer direction.</label>
+                <label class={labelCls}><input type="radio" name="current_situation" value="Something else" class={choiceCls} /> Something else.</label>
+              </div>
+              <div class={navCls}>
+                <button type="button" class={backCls}>Back</button>
+                <button type="button" class={nextCls}>Next</button>
+              </div>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="form-step hidden" data-step="5">
+              <h2 class={h2Cls}>What You Want to Be Known For</h2>
+              <p class={leadCls}>What would you like your business to become known for?</p>
+              <textarea name="known_for" class={areaCls} placeholder="Example: “Panel upgrades”, “high-end renovations”, “commercial HVAC”, etc."></textarea>
+              <div class={navCls}>
+                <button type="button" class={backCls}>Back</button>
+                <button type="button" class={nextCls}>Next</button>
+              </div>
+            </div>
+
+            <!-- Step 6 -->
+            <div class="form-step hidden" data-step="6">
+              <h2 class={h2Cls}>Timeline</h2>
+              <p class={leadCls}>How soon are you hoping to improve things?</p>
+              <div class="mt-4">
+                <label class={labelCls}><input type="radio" name="timeline" value="Immediately" class={choiceCls} /> Immediately</label>
+                <label class={labelCls}><input type="radio" name="timeline" value="Within 30 days" class={choiceCls} /> Within 30 days</label>
+                <label class={labelCls}><input type="radio" name="timeline" value="Within 3 months" class={choiceCls} /> Within 3 months</label>
+                <label class={labelCls}><input type="radio" name="timeline" value="Within 6 months" class={choiceCls} /> Within 6 months</label>
+                <label class={labelCls}><input type="radio" name="timeline" value="Just exploring" class={choiceCls} /> Just exploring</label>
+              </div>
+              <div class={navCls}>
+                <button type="button" class={backCls}>Back</button>
+                <button type="button" class={nextCls}>Next</button>
+              </div>
+            </div>
+
+            <!-- Step 7 -->
+            <div class="form-step hidden" data-step="7">
+              <h2 class={h2Cls}>Budget Range</h2>
+              <p class={leadCls}>If I identify a worthwhile opportunity, what investment would you be comfortable making?</p>
+              <div class="mt-4">
+                <label class={labelCls}><input type="radio" name="budget_range" value="Under $2500" class={choiceCls} /> Under $2,500</label>
+                <label class={labelCls}><input type="radio" name="budget_range" value="$2500-$5000" class={choiceCls} /> $2,500–$5,000</label>
+                <label class={labelCls}><input type="radio" name="budget_range" value="$5000-$10000" class={choiceCls} /> $5,000–$10,000</label>
+              </div>
+              <div class={navCls}>
+                <button type="button" class={backCls}>Back</button>
+                <button type="button" class={nextCls}>Next</button>
+              </div>
+            </div>
+
+            <!-- Step 8 -->
+            <div class="form-step hidden" data-step="8">
+              <h2 class={h2Cls}>Working Together</h2>
+              <p class={leadCls}>The businesses that get the best results usually participate along the way. That may mean sharing photos or videos, asking customers for reviews, providing updates, giving feedback, or giving access to systems I need to review.</p>
+              <p class="mt-3 text-neutral-200 font-semibold">Which statement best describes you?</p>
+              <div class="mt-4">
+                <label class={labelCls}><input type="radio" name="working_together" value="Happy to be involved" class={choiceCls} /> I’m happy to be involved if it helps us get better results.</label>
+                <label class={labelCls}><input type="radio" name="working_together" value="Can contribute occasionally" class={choiceCls} /> I can contribute occasionally, but my time is limited.</label>
+                <label class={labelCls}><input type="radio" name="working_together" value="Minimal input" class={choiceCls} /> I’m looking for someone to handle everything with minimal input from me.</label>
+              </div>
+              <div class={navCls}>
+                <button type="button" class={backCls}>Back</button>
+                <button type="button" class={nextCls}>Next</button>
+              </div>
+            </div>
+
+            <!-- Step 9 -->
+            <div class="form-step hidden" data-step="9">
+              <h2 class={h2Cls}>Contact Details</h2>
+              <p class={leadCls}>Please share your contact details so I can review your answers and arrange a Zoom conversation.</p>
+
+              <input name="company_name" class={fieldCls} placeholder="Company Name" required />
+              <input name="your_name" class={fieldCls} placeholder="Your Name" required />
+              <input name="email" type="email" class={fieldCls} placeholder="Email Address" required />
+              <input name="phone" class={fieldCls} placeholder="Phone Number" />
+              <input name="website" class={fieldCls} placeholder="Website" />
+
+              <p class={subLabelCls}>Best way to reach you</p>
+              <div>
+                <label class={labelCls}><input type="radio" name="best_contact_method" value="Phone" class={choiceCls} /> Phone</label>
+                <label class={labelCls}><input type="radio" name="best_contact_method" value="Email" class={choiceCls} /> Email</label>
+                <label class={labelCls}><input type="radio" name="best_contact_method" value="Text" class={choiceCls} /> Text</label>
+              </div>
+
+              <p class={subLabelCls}>Best time to contact you</p>
+              <div>
+                <label class={labelCls}><input type="radio" name="best_contact_time" value="Morning" class={choiceCls} /> Morning</label>
+                <label class={labelCls}><input type="radio" name="best_contact_time" value="Afternoon" class={choiceCls} /> Afternoon</label>
+                <label class={labelCls}><input type="radio" name="best_contact_time" value="Evening" class={choiceCls} /> Evening</label>
+              </div>
+
+              <div class={navCls}>
+                <button type="button" class={backCls}>Back</button>
+                <button type="submit" class={nextCls.replace('next ', '')}>Submit</button>
+              </div>
+            </div>
+          </form>
+
+          <div id="form-success" hidden class="rounded-xl bg-neutral-900 border border-lime-300 p-6 sm:p-8 text-center">
+            <h2 class={h2Cls}>Thanks — I’ve got it.</h2>
+            <p class={leadCls}>I’ll review your answers before our conversation. The next step is to choose a time that works for you.</p>
+            <a href="https://cal.com/YOUR-CAL-LINK" class="cal-link inline-block mt-6 px-6 py-3 rounded-md bg-lime-300 text-neutral-950 font-semibold text-sm hover:bg-lime-200 transition-colors">Book a Zoom Call</a>
           </div>
         </div>
       </section>
+
+      <script is:inline>
+        (function () {
+          const form = document.getElementById("rev4-intake-form");
+          if (!form) return;
+          const steps = Array.from(form.querySelectorAll(".form-step"));
+          const success = document.getElementById("form-success");
+          const endpoint = form.getAttribute("action");
+
+          let currentStep = 0;
+
+          const submissionIdField = document.getElementById("submission_id");
+          const formStatusField = document.getElementById("form_status");
+          const currentStepField = document.getElementById("current_step");
+
+          submissionIdField.value =
+            "rev4-" + Date.now() + "-" + Math.random().toString(36).slice(2);
+
+          function showStep(index) {
+            steps.forEach((step, i) => {
+              step.classList.toggle("hidden", i !== index);
+            });
+            currentStep = index;
+            currentStepField.value = String(index + 1);
+          }
+
+          function getCurrentStepFields() {
+            return Array.from(steps[currentStep].querySelectorAll("input, textarea, select"));
+          }
+
+          function validateStep() {
+            const fields = getCurrentStepFields();
+            for (const field of fields) {
+              if (field.hasAttribute("required") && !field.value.trim()) {
+                field.focus();
+                return false;
+              }
+            }
+            return true;
+          }
+
+          async function saveDraft() {
+            formStatusField.value = "draft";
+            const formData = new FormData(form);
+            formData.set("form_status", "draft");
+            formData.set("current_step", String(currentStep + 1));
+            try {
+              await fetch(endpoint, { method: "POST", body: formData, mode: "no-cors" });
+            } catch (error) {
+              console.warn("Draft save failed:", error);
+            }
+          }
+
+          form.addEventListener("click", async function (event) {
+            if (event.target.classList.contains("next")) {
+              if (!validateStep()) return;
+              await saveDraft();
+              if (currentStep < steps.length - 1) {
+                showStep(currentStep + 1);
+              }
+            }
+            if (event.target.classList.contains("back")) {
+              if (currentStep > 0) {
+                showStep(currentStep - 1);
+              }
+            }
+          });
+
+          form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+            if (!validateStep()) return;
+            formStatusField.value = "completed";
+            const formData = new FormData(form);
+            formData.set("form_status", "completed");
+            formData.set("current_step", String(currentStep + 1));
+            try {
+              await fetch(endpoint, { method: "POST", body: formData, mode: "no-cors" });
+              form.hidden = true;
+              success.hidden = false;
+            } catch (error) {
+              alert("Something went wrong. Please try again.");
+              console.error(error);
+            }
+          });
+
+          showStep(0);
+        })();
+      </script>
     </main>
   </div>
 </BaseLayout>
