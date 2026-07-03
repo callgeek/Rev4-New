@@ -235,8 +235,8 @@ const backCls = 'back px-6 py-3 rounded-md border border-neutral-600 text-neutra
 
             <!-- Step 1 -->
             <div class="form-step" data-step="1">
-              <h2 class={h2Cls}>Want To Know If We're a Good Fit?</h2>
-              <p class={leadCls}>This short assessment helps me understand what you're trying to achieve before we schedule a conversation. Most people complete it in about 5 minutes.</p>
+              <h2 class={h2Cls}>Want Your Inbox To Look Like The One Up Top? </h2>
+              <p class={leadCls}>Take this 5 minute assessment. Then we'll book a call. What happens after that is completely up to you.</p>
               <div class={navCls}>
                 <button type="button" class={nextCls}>Get Started</button>
               </div>
@@ -481,5 +481,41 @@ const backCls = 'back px-6 py-3 rounded-md border border-neutral-600 text-neutra
         })();
       </script>
     </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-neutral-800">
+      <div class="max-w-4xl mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-10">
+          <div>
+            <a href="/" class="inline-flex items-center">
+              <Image src={rev4Logo} alt="Rev4" class="h-8 w-auto" />
+            </a>
+            <p class="mt-4 text-neutral-400 leading-relaxed">
+              Stress-free marketing for local business owners. Toronto, Ontario.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-sm font-semibold uppercase tracking-widest text-neutral-400">Explore</h3>
+            <ul class="mt-4 space-y-3">
+              <li><a href="#proof" class="text-neutral-100 hover:text-white transition-colors">The track record</a></li>
+              <li><a href="#how" class="text-neutral-100 hover:text-white transition-colors">How it works</a></li>
+              <li><a href="#contact" class="text-neutral-100 hover:text-white transition-colors">Contact</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-sm font-semibold uppercase tracking-widest text-neutral-400">Talk to Kevin</h3>
+            <ul class="mt-4 space-y-3">
+              <li><a href="mailto:kevin@rev4.ca" class="text-neutral-100 hover:text-white transition-colors">kevin@rev4.ca</a></li>
+              <li><a href="tel:+14160000000" class="text-neutral-100 hover:text-white transition-colors">(416) 000-0000</a></li>
+              <li><a href="#contact" class="text-lime-300 hover:text-lime-200 transition-colors">Start the fit check &rarr;</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-12 pt-6 border-t border-neutral-800 text-sm text-neutral-400 space-y-3">
+          <p>&copy; 2026 REV4 &middot; <a href="/privacy" class="hover:text-white transition-colors">Privacy policy</a></p>
+          <p>Found me on Google or ChatGPT? <span class="text-lime-300">That&rsquo;s the product.</span></p>
+        </div>
+      </div>
+    </footer>
   </div>
 </BaseLayout>
