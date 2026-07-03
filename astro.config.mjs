@@ -14,6 +14,7 @@ try {
 // https://astro.build/config
 // Note: Set your 'site' URL in SEO Settings to enable sitemap generation
 export default defineConfig({
+  site: 'https://rev4.co',
   integrations: [mdx(), sitemap(), react()],
   image: {
     // Use Sharp for image optimization (converts to WebP/AVIF, resizes)
