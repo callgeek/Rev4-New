@@ -257,18 +257,29 @@ const backCls = 'back px-6 py-3 rounded-md border border-neutral-600 text-neutra
       <!-- 6 · Intake form -->
       <section id="contact" class="scroll-mt-20">
         <div class="max-w-4xl mx-auto px-4 py-10">
-          <form id="rev4-intake-form" action="https://usebasin.com/f/f4aedf04c70c" method="POST"
-                class="rounded-xl bg-neutral-900 border border-neutral-800 p-6 sm:p-8">
+          <div class="rounded-xl bg-neutral-900 border border-neutral-800 p-6 sm:p-8 grid md:grid-cols-[1.1fr_1fr] gap-8 md:gap-10 items-center">
+          <div class="min-w-0">
+          <form id="rev4-intake-form" action="https://usebasin.com/f/f4aedf04c70c" method="POST">
             <input type="hidden" name="submission_id" id="submission_id" />
             <input type="hidden" name="form_status" id="form_status" value="draft" />
             <input type="hidden" name="current_step" id="current_step" value="1" />
 
             <!-- Step 1 -->
             <div class="form-step" data-step="1">
-              <h2 class={h2Cls}>Want Your Inbox To Look Like The One Up Top? </h2>
-              <p class={leadCls}>Take this 5 minute assessment. Then we'll book a call. What happens after that is completely up to you.</p>
-              <div class={navCls}>
+              <h2 class={h2Cls}>Want your inbox to look like <span class={accent}>this?</span></h2>
+              <p class={leadCls}>Five minutes. Then a free call. Then you decide.</p>
+              <div class="mt-8 flex items-center gap-4">
                 <button type="button" class={nextCls}>Get Started</button>
+                <!-- Desktop: arrow points right to the inbox card -->
+                <svg width="72" height="34" viewBox="0 0 72 34" fill="none" aria-hidden="true" class="hidden md:block shrink-0">
+                  <path d="M4 26 C 26 30, 48 22, 64 8" stroke="#a3e635" stroke-width="2" stroke-linecap="round" fill="none" stroke-dasharray="3 5"/>
+                  <path d="M56 7 L 65 7 L 62 16" stroke="#a3e635" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+                <!-- Mobile: arrow points down to the stacked inbox card -->
+                <svg width="34" height="56" viewBox="0 0 34 56" fill="none" aria-hidden="true" class="md:hidden shrink-0">
+                  <path d="M10 4 C 26 12, 28 28, 20 44" stroke="#a3e635" stroke-width="2" stroke-linecap="round" fill="none" stroke-dasharray="3 5"/>
+                  <path d="M11 41 L 19 50 L 27 42" stroke="#a3e635" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
               </div>
             </div>
 
@@ -416,12 +427,83 @@ const backCls = 'back px-6 py-3 rounded-md border border-neutral-600 text-neutra
             </div>
           </form>
 
-          <div id="form-success" hidden class="rounded-xl bg-neutral-900 border border-lime-300 p-6 sm:p-8 text-center">
+          <div id="form-success" hidden class="rounded-lg border border-lime-300 p-6 text-center">
             <h2 class={h2Cls}>Thanks — I’ve got it.</h2>
             <p class={leadCls}>I’ll review your answers before our conversation. The next step is to choose a time that works for you.</p>
           </div>
+          </div>
+
+          <!-- Animated inbox preview card -->
+          <div class="min-w-0 bg-white rounded-lg p-4">
+            <div class="flex items-center justify-between pb-2 border-b border-neutral-200">
+              <span class="text-sm font-semibold text-neutral-900">New leads</span>
+              <span class="flex items-center gap-1.5 rounded-full bg-lime-100 px-2.5 py-0.5 text-xs font-medium text-lime-800">
+                <span class="inline-block w-1.5 h-1.5 rounded-full bg-lime-600 animate-pulse motion-reduce:animate-none"></span>
+                New
+              </span>
+            </div>
+            <div id="lead-feed" class="h-[220px] overflow-hidden" aria-hidden="true"></div>
+            <p class="mt-2 text-center text-xs text-neutral-400">A typical week, replayed &middot; details redacted</p>
+          </div>
+          </div>
         </div>
       </section>
+
+      <script is:inline>
+        (function () {
+          var feed = document.getElementById('lead-feed');
+          if (!feed) return;
+          var pool = [
+            { n: 'Implant consult', s: '"Missing two molars, ready to book…"' },
+            { n: 'Denture consult', s: '"Looking at options for my father…"' },
+            { n: 'Full mouth implant consult', s: '"Want to discuss full-mouth options…"' },
+            { n: 'Invisalign consult', s: '"Hoping for straighter teeth by summer…"' },
+            { n: 'Implant denture consult', s: '"Tired of loose dentures, what next…"' }
+          ];
+          var times = ['just now', '38 min ago', '2 hrs ago', 'yesterday'];
+          var idx = 0;
+          var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+          function rowEl(item, t) {
+            var d = document.createElement('div');
+            d.className = 'lead-row py-2 border-b border-neutral-100 transition-all duration-500 motion-reduce:transition-none';
+            d.innerHTML = '<div class="flex justify-between items-baseline gap-2"><span class="lead-name text-sm font-medium text-neutral-900"></span><span class="lead-time text-xs text-neutral-400 whitespace-nowrap"></span></div><div class="lead-snip text-xs text-neutral-500 mt-0.5 truncate"></div>';
+            d.querySelector('.lead-name').textContent = item.n;
+            d.querySelector('.lead-time').textContent = t;
+            d.querySelector('.lead-snip').textContent = item.s;
+            return d;
+          }
+
+          function retime() {
+            var rows = feed.children;
+            for (var i = 0; i < rows.length; i++) {
+              var el = rows[i].querySelector('.lead-time');
+              if (el) el.textContent = times[Math.min(i, times.length - 1)];
+            }
+          }
+
+          for (var i = 0; i < 4; i++) {
+            feed.appendChild(rowEl(pool[idx % pool.length], times[i]));
+            idx++;
+          }
+
+          if (reduced) return;
+
+          setInterval(function () {
+            var row = rowEl(pool[idx % pool.length], 'just now');
+            idx++;
+            row.classList.add('opacity-0', '-translate-y-2.5');
+            feed.insertBefore(row, feed.firstChild);
+            requestAnimationFrame(function () {
+              requestAnimationFrame(function () {
+                row.classList.remove('opacity-0', '-translate-y-2.5');
+              });
+            });
+            while (feed.children.length > 4) feed.removeChild(feed.lastChild);
+            retime();
+          }, 3200);
+        })();
+      </script>
 
       <script is:inline>
         (function () {
