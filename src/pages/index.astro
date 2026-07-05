@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import ToroLeadTicker from '@/components/ToroLeadTicker.astro';
 import { Image } from 'astro:assets';
 import kevinPhoto from '@/media/kevin-photo-1.jpg';
 import toroLogo from '@/media/Official-Toro-Electric-Logo-2024-Optimized.png';
@@ -64,28 +65,8 @@ const backCls = 'back px-6 py-3 rounded-md border border-neutral-600 text-neutra
               </div>
             </div>
 
-            <!-- Inbox card -->
-            <div class="rounded-lg bg-white text-neutral-900 p-5 shadow-lg">
-              <div class="flex items-center justify-between mb-4">
-                <span class="font-semibold">Toro Electric New Leads</span>
-                <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-lime-200 text-lime-900">This week</span>
-              </div>
-              <ul class="text-sm">
-                <li class="flex items-center justify-between py-3 border-t border-neutral-200">
-                  <span>Panel upgrade — East York</span><span class="text-neutral-500">Mon</span>
-                </li>
-                <li class="flex items-center justify-between py-3 border-t border-neutral-200">
-                  <span>EV charger install</span><span class="text-neutral-500">Tue</span>
-                </li>
-                <li class="flex items-center justify-between py-3 border-t border-neutral-200">
-                  <span>Fuse to Panel Upgrade</span><span class="text-neutral-500">Wed</span>
-                </li>
-                <li class="flex items-center justify-between py-3 border-t border-neutral-200">
-                  <span>Hot tub Connect — Leaside</span><span class="text-neutral-500">Fri</span>
-                </li>
-              </ul>
-              <p class="text-center text-xs text-neutral-500 mt-4">Real client inquiries, details redacted</p>
-            </div>
+            <!-- Inbox card (animated ticker) -->
+            <ToroLeadTicker />
           </div>
         </div>
       </section>

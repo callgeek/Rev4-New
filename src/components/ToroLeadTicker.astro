@@ -1,0 +1,119 @@
+---
+// ToroLeadTicker.astro — hero right-column card only.
+// Drop-in: replaces the static "Toro Electric New Leads" card.
+// No props required; tune the constants in the script.
+// Zero framework JS — plain <script>, no hydration.
+---
+
+<div class="overflow-hidden rounded-lg bg-white p-4 shadow-xl">
+  <div class="flex items-center justify-between gap-3 border-b border-neutral-200 pb-3">
+    <span class="text-[15px] font-semibold text-neutral-900">Toro Electric New Leads</span>
+    <span class="whitespace-nowrap rounded-full bg-lime-100 px-3 py-0.5 text-xs font-medium text-lime-800">This week</span>
+  </div>
+
+  <div id="toro-feed" class="h-[176px] overflow-hidden" aria-live="off"></div>
+
+  <p class="mt-3 text-center text-xs text-neutral-500">
+    Real client inquiries, details redacted
+  </p>
+</div>
+
+<style is:global>
+  /* is:global because rows are created by JS and won't receive Astro's
+     scoped attribute. Names are prefixed to avoid collisions. */
+  .toro-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    padding: 10px 2px;
+    border-bottom: 1px solid #f2f2f2;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .toro-row--enter { opacity: 0; transform: translateY(12px); }
+  .toro-row--exit { opacity: 0; }
+  .toro-row__name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #171717;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .toro-row__day {
+    font-size: 13px;
+    color: #999;
+    white-space: nowrap;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .toro-row { transition: none; }
+  }
+</style>
+
+<script>
+  // ---- Tune here ----
+  const VISIBLE_ROWS = 4;
+  const START_DELAY_MS = 3200; // let the headline land first
+  const INTERVAL_MS = 4200; // ambient, slower than the CTA feed
+  const POOL = [
+    'Panel upgrade — East York',
+    'EV charger install — North York',
+    'Fuse to panel upgrade',
+    'Hot tub circuit — Leaside',
+    '200A service upgrade — Scarborough',
+    'Garage subpanel — Danforth',
+    'Basement suite panel — Etobicoke',
+  ];
+  const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']; // no Sundays
+  const START_DAYS = [0, 1, 2, 4]; // Mon, Tue, Wed, Fri — matches live site
+  // -------------------
+
+  const feed = document.getElementById('toro-feed');
+  if (feed) {
+    let poolIdx = 0;
+    let dayIdx = 5; // next arrival after the initial Fri is Sat
+    const reduced =
+      window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const rowEl = (name: string, day: string) => {
+      const d = document.createElement('div');
+      d.className = 'toro-row';
+      d.innerHTML =
+        '<span class="toro-row__name"></span><span class="toro-row__day"></span>';
+      d.querySelector('.toro-row__name')!.textContent = name;
+      d.querySelector('.toro-row__day')!.textContent = day;
+      return d;
+    };
+
+    for (let i = 0; i < VISIBLE_ROWS; i++) {
+      feed.appendChild(rowEl(POOL[poolIdx % POOL.length], DAYS[START_DAYS[i]]));
+      poolIdx++;
+    }
+
+    const tick = () => {
+      const row = rowEl(POOL[poolIdx % POOL.length], DAYS[dayIdx % DAYS.length]);
+      poolIdx++;
+      dayIdx++;
+      row.classList.add('toro-row--enter');
+      feed.appendChild(row);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => row.classList.remove('toro-row--enter'));
+      });
+      const oldest = feed.firstChild as HTMLElement | null;
+      if (feed.children.length > VISIBLE_ROWS && oldest) {
+        oldest.classList.add('toro-row--exit');
+        setTimeout(() => {
+          if (oldest.parentNode === feed) feed.removeChild(oldest);
+        }, 480);
+      }
+    };
+
+    if (!reduced) {
+      setTimeout(() => {
+        tick();
+        setInterval(tick, INTERVAL_MS);
+      }, START_DELAY_MS);
+    }
+  }
+</script>
