@@ -30,16 +30,47 @@ const backCls = 'back px-6 py-3 rounded-md border border-neutral-600 text-neutra
   <div class="min-h-screen bg-neutral-950 text-neutral-100 selection:bg-lime-300 selection:text-neutral-950">
     <!-- Header -->
     <header class="border-b border-neutral-800">
-      <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="relative max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
         <a href="/" class="flex items-center">
           <Image src={rev4Logo} alt="Rev4" class="h-9 w-auto" />
         </a>
-        <nav class="flex items-center gap-6 text-sm">
+
+        <!-- Desktop nav -->
+        <nav class="hidden md:flex items-center gap-6 text-sm">
           <a href="#proof" class="text-neutral-300 hover:text-white transition-colors">Success Stories</a>
-          <a href="#how" class="text-neutral-300 hover:text-white transition-colors">How it works</a>          <a href="#about" class="text-neutral-300 hover:text-white transition-colors">About Kevin</a>
+          <a href="#how" class="text-neutral-300 hover:text-white transition-colors">How it works</a>
+          <a href="#about" class="text-neutral-300 hover:text-white transition-colors">About Kevin</a>
           <a href="#contact" class="px-4 py-1.5 rounded-md border border-neutral-600 hover:border-neutral-400 text-white transition-colors">Contact</a>
         </nav>
+
+        <!-- Mobile: Contact CTA always visible + hamburger for section links -->
+        <div class="flex md:hidden items-center gap-3 text-sm">
+          <a href="#contact" class="px-4 py-1.5 rounded-md border border-neutral-600 hover:border-neutral-400 text-white transition-colors">Contact</a>
+          <details id="mobile-menu" class="group">
+            <summary class="list-none [&::-webkit-details-marker]:hidden cursor-pointer p-2 -mr-2 text-neutral-300 hover:text-white transition-colors" aria-label="Toggle navigation menu">
+              <svg class="h-6 w-6 group-open:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+              <svg class="h-6 w-6 hidden group-open:block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+              </svg>
+            </summary>
+            <nav class="absolute left-0 right-0 top-full z-[var(--z-dropdown)] flex flex-col border-b border-neutral-800 bg-neutral-950 px-4 py-2">
+              <a href="#proof" class="py-3 text-neutral-300 hover:text-white transition-colors">Success Stories</a>
+              <a href="#how" class="py-3 text-neutral-300 hover:text-white transition-colors">How it works</a>
+              <a href="#about" class="py-3 text-neutral-300 hover:text-white transition-colors">About Kevin</a>
+            </nav>
+          </details>
+        </div>
       </div>
+
+      <script>
+        // Close the mobile menu after tapping a section link
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenu?.querySelectorAll('a').forEach((link) => {
+          link.addEventListener('click', () => mobileMenu.removeAttribute('open'));
+        });
+      </script>
     </header>
 
     <main id="main-content">
